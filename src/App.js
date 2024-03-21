@@ -7,6 +7,7 @@ import {
   Loader,
   StartScreen,
   Question,
+  NextButton,
 } from "./components";
 
 export default function App() {
@@ -40,11 +41,15 @@ export default function App() {
           />
         )}
         {status === "active" && (
-          <Question
-            question={questions[index]}
-            dispatch={dispatch}
-            answer={answer}
-          />
+          <>
+            {" "}
+            <Question
+              question={questions[index]}
+              dispatch={dispatch}
+              answer={answer}
+            />
+            <NextButton dispatch={dispatch} />
+          </>
         )}
       </Main>
     </div>
