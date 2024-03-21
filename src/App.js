@@ -10,7 +10,10 @@ import {
 } from "./components";
 
 export default function App() {
-  const [{ questions, status }, dispatch] = useReducer(reducer, initialState);
+  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
   const numberOfQuestions = questions.length;
   useEffect(
     () => async () => {
@@ -36,7 +39,13 @@ export default function App() {
             dispatch={dispatch}
           />
         )}
-        {status === "active" && <Question />}
+        {status === "active" && (
+          <Question
+            question={questions[index]}
+            dispatch={dispatch}
+            answer={answer}
+          />
+        )}
       </Main>
     </div>
   );

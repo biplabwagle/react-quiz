@@ -3,6 +3,9 @@ const initialState = {
   //Possible status states for the app
   //loading, error, ready, active, finished
   status: "loading",
+  index: 0,
+  answer: null,
+  points: 0,
 };
 
 function reducer(state, action) {
@@ -13,6 +16,8 @@ function reducer(state, action) {
       return { ...state, status: "error" };
     case "start":
       return { ...state, status: "active" };
+    case "newAnswer":
+      return { ...state, answer: action.payload };
     default:
       throw new Error("This is not good");
   }

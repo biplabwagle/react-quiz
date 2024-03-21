@@ -6,7 +6,10 @@ function StartScreen({ numberOfQuestions, dispatch }) {
         {numberOfQuestions} question{numberOfQuestions < 2 ? "" : "s"} to test
         your react mastery
       </h3>
-      <button className="btn btn-ui" onClick={dispatch({ type: "start" })}>
+      <button
+        className="btn btn-ui"
+        onClick={() => dispatch({ type: "start" })}
+      >
         Let's start
       </button>
     </div>
