@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useReducer } from "react";
+import { reducer, initialState } from "./state/initialState";
+import {
+  Header,
+  Main,
+  Error,
+  Loader,
+  StartScreen,
+  Question,
+} from "./components";
 
-function App() {
+export default function App() {
+  const [{ questions, status }, dispatch] = useReducer(reducer, initialState);
+  const numberOfQuestions = questions.length;
+  useEffect(
+    () => async () => {
+      try {
+        const response = await fetch("http://localhost:9000/questions");
+        const data = await response.json();
+        dispatch({ type: "data received", payload: data });
+      } catch (error) {
+        dispatch({ type: "data failed", payload: error });
+      }
+    },
+    []
+  );
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header />
+      <Main>
+        {status === "loading" && <Loader />}
+        {status === "error" && <Error />}
+        {status === "ready" && (
+          <StartScreen
+            numberOfQuestions={numberOfQuestions}
+            dispatch={dispatch}
+          />
+        )}
+        {status === "active" && <Question />}
+      </Main>
     </div>
   );
 }
-
-export default App;
