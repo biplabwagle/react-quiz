@@ -6,16 +6,25 @@ const initialState = {
   index: 0,
   answer: null,
   points: 0,
+  highScore: 0,
+  secondsRemaining: null,
 };
 
+const SECS_PER_QUESTION = 30;
+
 function reducer(state, action) {
+  console.log(state);
   switch (action.type) {
     case "data received":
       return { ...state, questions: action.payload, status: "ready" };
     case "data failed":
       return { ...state, status: "error" };
     case "start":
-      return { ...state, status: "active" };
+      return {
+        ...state,
+        status: "active",
+        secondsRemaining: state.questions.length * SECS_PER_QUESTION,
+      };
     case "newAnswer":
       const question = state.questions.at(state.index);
       return {
@@ -30,8 +39,29 @@ function reducer(state, action) {
       return { ...state, index: state.index + 1, answer: null };
     }
     case "finished": {
-      return { ...state, status: "finished" };
+      return {
+        ...state,
+        status: "finished",
+        highScore:
+          state.points > state.highScore ? state.points : state.highScore,
+      };
     }
+    case "restart":
+      return {
+        ...state,
+        status: "ready",
+        index: 0,
+        answer: null,
+        points: 0,
+        highScore: 0,
+        secondsRemaining: null,
+      };
+    case "tick":
+      return {
+        ...state,
+        secondsRemaining: state.secondsRemaining - 1,
+        status: state.secondsRemaining === 0 ? "finished" : state.status,
+      };
     default:
       throw new Error("This is not good");
   }

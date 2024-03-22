@@ -9,14 +9,16 @@ import {
   Question,
   NextButton,
   Progress,
+  Timer,
+  Footer,
 } from "./components";
 import FinishedUI from "./components/FinishedUI";
 
 export default function App() {
-  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [
+    { questions, status, index, answer, points, highScore, secondsRemaining },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   const numberOfQuestions = questions.length;
   const totalPoints = questions.reduce((acc, cur) => acc + cur.points, 0);
@@ -59,11 +61,24 @@ export default function App() {
               dispatch={dispatch}
               answer={answer}
             />
-            <NextButton dispatch={dispatch} answer={answer} />
+            <Footer>
+              <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
+              <NextButton
+                dispatch={dispatch}
+                answer={answer}
+                index={index}
+                numQuestions={numberOfQuestions}
+              />
+            </Footer>
           </>
         )}
         {status === "finished" && (
-          <FinishedUI points={points} totalPoints={totalPoints} />
+          <FinishedUI
+            points={points}
+            totalPoints={totalPoints}
+            highScore={highScore}
+            dispatch={dispatch}
+          />
         )}
       </Main>
     </div>

@@ -6,6 +6,8 @@ import StartScreen from "./StartScreen";
 import Question from "./Question";
 import NextButton from "./NextButton";
 import Progress from "./Progress";
+import Timer from "./Timer";
+import Footer from "./Footer";
 export {
   Header,
   Error,
@@ -15,4 +17,6 @@ export {
   Question,
   NextButton,
   Progress,
+  Timer,
+  Footer,
 };
