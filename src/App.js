@@ -8,14 +8,19 @@ import {
   StartScreen,
   Question,
   NextButton,
+  Progress,
 } from "./components";
+import FinishedUI from "./components/FinishedUI";
 
 export default function App() {
   const [{ questions, status, index, answer, points }, dispatch] = useReducer(
     reducer,
     initialState
   );
+
   const numberOfQuestions = questions.length;
+  const totalPoints = questions.reduce((acc, cur) => acc + cur.points, 0);
+
   useEffect(
     () => async () => {
       try {
@@ -42,14 +47,23 @@ export default function App() {
         )}
         {status === "active" && (
           <>
-            {" "}
+            <Progress
+              index={index}
+              numQuestions={numberOfQuestions}
+              points={points}
+              totalPoints={totalPoints}
+              answer={answer}
+            />
             <Question
               question={questions[index]}
               dispatch={dispatch}
               answer={answer}
             />
-            <NextButton dispatch={dispatch} />
+            <NextButton dispatch={dispatch} answer={answer} />
           </>
+        )}
+        {status === "finished" && (
+          <FinishedUI points={points} totalPoints={totalPoints} />
         )}
       </Main>
     </div>

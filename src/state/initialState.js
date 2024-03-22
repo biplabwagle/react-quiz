@@ -27,7 +27,10 @@ function reducer(state, action) {
             : state.points,
       };
     case "nextQuestion": {
-      return { ...state, index: state.index + 1 };
+      return { ...state, index: state.index + 1, answer: null };
+    }
+    case "finished": {
+      return { ...state, status: "finished" };
     }
     default:
       throw new Error("This is not good");
